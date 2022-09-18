@@ -13,12 +13,18 @@ RUN docker-php-ext-install fileinfo
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install intl
 
+# Create Hooks dependencies - changux
+RUN mkdir -p /var/www/html/include/vendor/hooks/src/gburtini/Hooks
+
 # Copy config files
 COPY ./docker/server/httpd.conf /etc/apache2/httpd.conf
 COPY ./docker/server/mod_rewrite.load /etc/apache2/mods-enabled/mod_rewrite.load
 COPY ./docker/server/mod_headers.load /etc/apache2/mods-enabled/mod_headers.load
 COPY ./docker/server/vhost-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./docker/server/dir-index.conf /etc/apache2/mods/enabled/dir.conf
+# changux
+COPY ./docker/server/Hooks.php /var/www/html/include/vendor/hooks/src/gburtini/Hooks/Hooks.php
+COPY ./docker/server/Plugins.php /var/www/html/include/vendor/hooks/src/gburtini/Hooks/Plugins.php
 
 # Configure PHP
 COPY ./docker/server/php.ini /usr/local/etc/php/php.ini
